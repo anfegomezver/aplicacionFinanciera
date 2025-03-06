@@ -1,0 +1,3 @@
+C:/Users/GYZ_SENA/CLionProjects/aplicacionFinanciera/cmake-build-debug/CMakeFiles/aplicacionFinanciera.dir
+C:/Users/GYZ_SENA/CLionProjects/aplicacionFinanciera/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/GYZ_SENA/CLionProjects/aplicacionFinanciera/cmake-build-debug/CMakeFiles/rebuild_cache.dir

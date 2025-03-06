@@ -1,0 +1,14 @@
+# ninja log v6
+3	357	7629740643711193	build.ninja	f920883bd8460ef4
+48	190	7629737637285010	CMakeFiles/aplicacionFinanciera.dir/sources/validaciones.c.obj	3c84fb024adbd8ca
+31	171	7629737637109389	CMakeFiles/aplicacionFinanciera.dir/sources/main.c.obj	ffb2bc2bbcc4d915
+76	195	7629737637561165	CMakeFiles/aplicacionFinanciera.dir/sources/transacciones/reimpresion.c.obj	25a880af20525f06
+56	173	7629737637357403	CMakeFiles/aplicacionFinanciera.dir/sources/transacciones/anulacion.c.obj	7de6542f526e0183
+41	227	7629737637212284	CMakeFiles/aplicacionFinanciera.dir/sources/operaciones.c.obj	ee75be249fc6788e
+63	189	7629737637428387	CMakeFiles/aplicacionFinanciera.dir/sources/transacciones/cierre.c.obj	570dc72966188542
+83	205	7629737637632156	CMakeFiles/aplicacionFinanciera.dir/sources/transacciones/reporteTotal.c.obj	1bcbc248959851e2
+70	244	7629737637500277	CMakeFiles/aplicacionFinanciera.dir/sources/transacciones/compra.c.obj	d5ecc2cb686b95c5
+30	1185	7629738246772182	CMakeFiles/aplicacionFinanciera.dir/sources/menu.c.obj	b5d118ad678b6953
+1186	1316	7629738258331289	aplicacionFinanciera.exe	62e8411d097c4d1c
+7	133	7629744059722882	CMakeFiles/aplicacionFinanciera.dir/sources/transacciones/compra.c.obj	d5ecc2cb686b95c5
+134	301	7629744060994825	aplicacionFinanciera.exe	62e8411d097c4d1c
