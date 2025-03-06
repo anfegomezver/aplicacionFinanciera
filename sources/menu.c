@@ -48,6 +48,7 @@ void menu(){
         case 5:
             system("cls");
             crearReporteTotal();
+            leerArchivo();
             printf("Presiona una tecla para continuar...\n");
             getch();
             system("cls");
