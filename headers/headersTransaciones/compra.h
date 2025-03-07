@@ -17,5 +17,6 @@ typedef struct
 
 void crearCompra();
 int validarCaracteres(char []);
+int esValidaTarjeta(char*, char*);
 
 #endif

@@ -37,9 +37,15 @@ void menu()
         case 3:
             system("cls");
             cerrar();
-            printf("\nPresiona una tecla para continuar...");
-            getch();
-            system("cls");
+            int cont;
+            obtenerTamArchivo("../output/Transacciones.txt", &cont);
+            if (cont != 0)
+            {
+                printf("\nPresiona una tecla para continuar...");
+                getch();
+                system("cls");
+            }
+
             break;
         case 4:
             system("cls");

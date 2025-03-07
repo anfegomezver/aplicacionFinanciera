@@ -7,6 +7,9 @@
 
 void cerrar()
 {
+    const char* ruta = "../output/Transacciones.txt";
+    int cont;
+    obtenerTamArchivo(ruta, &cont);
     char opcion;
     printf("************ CIERRE *************\n\n");
     crearReporteTotal();
@@ -16,23 +19,27 @@ void cerrar()
     system("cls");
     printf("************ CIERRE *************\n\n");
 
-    printf(
-        "Estas seguro de que quieres realizar el cierre?\n\n1: Si, estoy seguro\n2: No, no estoy seguro\n\nIngrese una opcion: ");
-    scanf("%c", &opcion);
-    fflush(stdin);
-    system("cls");
-    printf("************ CIERRE *************\n\n");
-    switch (opcion)
+    if (cont!=0)
     {
-    case '1':
-        limpiarArchivo();
+        printf(
+        "Estas seguro de que quieres realizar el cierre?\n\n1: Si, estoy seguro\n2: No, no estoy seguro\n\nIngrese una opcion: ");
+        scanf("%c", &opcion);
+        fflush(stdin);
+        system("cls");
+        printf("************ CIERRE *************\n\n");
+        switch (opcion)
+        {
+        case '1':
+            limpiarArchivo();
 
-        printf("Se borro el historico de transacciones.\n");
-        break;
-    case '2':
-        printf("Volviendo al menu...\n");
+            printf("Se borro el historico de transacciones.\n");
+            break;
+        case '2':
+            printf("Volviendo al menu...\n");
 
-        return;
-    default: printf("Opcion incorrecta.\n");
+            return;
+        default: printf("Opcion incorrecta.\n");
+        }
     }
+
 }

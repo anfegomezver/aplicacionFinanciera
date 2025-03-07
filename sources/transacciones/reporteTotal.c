@@ -8,6 +8,7 @@
 
 void crearReporteTotal()
 {
+
   Transacciones* transacciones = NULL;
   int numTransacciones;
   int contadorCompra = 0, contadorAnulacion = 0;
@@ -29,6 +30,9 @@ void crearReporteTotal()
         contadorAnulacion++;
       }
     }
+  }else
+  {
+    return;
   }
   if (transacciones != NULL)
   {

@@ -88,11 +88,6 @@ void leerArchivo(Transacciones** transacciones, int* cont)
   if (*cont == 0)
   {
     printf("No hay transacciones realizadas.\n");
-
-    printf("\nPresiona una tecla para continuar...");
-    getch();
-    system("cls");
-    menu();
   }
 
   FILE* file = fopen(ruta, "r");
