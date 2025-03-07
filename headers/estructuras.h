@@ -3,7 +3,8 @@
 
 #include "headersTransaciones/compra.h"
 
-typedef struct {
+typedef struct
+{
     short dia;
     short mes;
     short anio;
@@ -12,7 +13,8 @@ typedef struct {
     short segundo;
 } FechaCreacion;
 
-typedef struct Transacciones {
+typedef struct Transacciones
+{
     short referencia;
     char estado[8];
     Datos datos;

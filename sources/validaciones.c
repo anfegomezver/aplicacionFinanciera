@@ -1,6 +1,6 @@
 #include <string.h>
 
-int validarCaracteres(char *cadena)
+int validarCaracteres(char* cadena)
 {
     for (int i = 0; cadena[i] != '\0'; i++)
     {
@@ -11,11 +11,11 @@ int validarCaracteres(char *cadena)
     }
     return 0;
 }
-int validarTamano(char *cadena, int tamano)
+
+int validarTamano(char* cadena, int tamano)
 {
     if (((int)strlen(cadena)) < tamano)
     {
-
         return 1;
     }
     return 0;

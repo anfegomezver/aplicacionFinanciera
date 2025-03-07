@@ -9,46 +9,50 @@
 #include <windows.h>
 #include <conio.h>
 
-void menu(){
-
+void menu()
+{
     short opcion;
-    do{
-        printf("************ MENU ************\n\n1 - Compra\n2 - Anulacion\n3 - Cierre \n4 - Reimpresion\n5 - Reporte total\n6 - Salir\n\n******************************\n\nIngrese una opcion del menu: ");
+    do
+    {
+        printf(
+            "************ MENU ************\n\n1 - Compra\n2 - Anulacion\n3 - Cierre \n4 - Reimpresion\n5 - Reporte total\n6 - Salir\n\n******************************\n\nIngrese una opcion del menu: ");
         scanf("%hd", &opcion);
         fflush(stdin);
-        switch(opcion){
+        switch (opcion)
+        {
         case 1:
             system("cls");
             crearCompra();
-            printf("Presiona una tecla para continuar...\n");
+            printf("\nPresiona una tecla para continuar...");
             getch();
             system("cls");
             break;
         case 2:
             system("cls");
             anularCompra();
-            printf("Presiona una tecla para continuar...\n");
+            printf("\nPresiona una tecla para continuar...");
             getch();
             system("cls");
             break;
         case 3:
             system("cls");
             cerrar();
-            printf("Presiona una tecla para continuar...\n");
+            printf("\nPresiona una tecla para continuar...");
             getch();
             system("cls");
             break;
         case 4:
             system("cls");
             reimprimir();
-            printf("Presiona una tecla para continuar...\n");
+            printf("\nPresiona una tecla para continuar...");
             getch();
             system("cls");
             break;
         case 5:
             system("cls");
+            printf("******** REPORTE TOTAL ********\n\n");
             crearReporteTotal();
-            printf("Presiona una tecla para continuar...\n");
+            printf("\nPresiona una tecla para continuar...");
             getch();
             system("cls");
             break;
@@ -57,12 +61,14 @@ void menu(){
             break;
         default:
             system("cls");
-            printf("opcion invalida\n");
-            printf("Presiona una tecla para continuar...\n");
+            printf("********************************\n\n");
+            printf("Opcion no valida\n");
+            printf("\nPresiona una tecla para continuar...");
             getch();
             system("cls");
         }
-    }while(opcion != 6);
+    }
+    while (opcion != 6);
 
     printf("Fin del programa.\n\n\nIngrese cualquier tecla para cerrar esta ventana...");
     getch();

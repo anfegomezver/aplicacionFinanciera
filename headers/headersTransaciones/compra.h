@@ -1,12 +1,14 @@
 #ifndef COMPRA_H
 #define COMPRA_H
 
-typedef struct {
+typedef struct
+{
     char mes[3];
     char anio[5];
 } FechaTarjeta;
 
-typedef struct {
+typedef struct
+{
     float monto;
     char pan[17];
     char cvv[4];
@@ -14,9 +16,6 @@ typedef struct {
 } Datos;
 
 void crearCompra();
-
-int validarCaracteres(char[]);
-int validarTamano(char[],int);
-int esValidaTarjeta(char*, char*);
+int validarCaracteres(char []);
 
 #endif
