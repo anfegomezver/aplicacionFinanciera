@@ -12,3 +12,13 @@
 373	769	7630785137712594	aplicacionFinanciera.exe	62e8411d097c4d1c
 7	1182	7630789303775316	CMakeFiles/aplicacionFinanciera.dir/sources/menu.c.obj	b5d118ad678b6953
 1183	1310	7630789315536666	aplicacionFinanciera.exe	62e8411d097c4d1c
+5	141	7630797608384576	CMakeFiles/aplicacionFinanciera.dir/sources/main.c.obj	ffb2bc2bbcc4d915
+23	150	7630797608573551	CMakeFiles/aplicacionFinanciera.dir/sources/validaciones.c.obj	3c84fb024adbd8ca
+37	192	7630797608709312	CMakeFiles/aplicacionFinanciera.dir/sources/transacciones/cierre.c.obj	570dc72966188542
+30	194	7630797608638199	CMakeFiles/aplicacionFinanciera.dir/sources/transacciones/anulacion.c.obj	7de6542f526e0183
+52	203	7630797608862639	CMakeFiles/aplicacionFinanciera.dir/sources/transacciones/reimpresion.c.obj	25a880af20525f06
+60	212	7630797608933860	CMakeFiles/aplicacionFinanciera.dir/sources/transacciones/reporteTotal.c.obj	1bcbc248959851e2
+16	214	7630797608502099	CMakeFiles/aplicacionFinanciera.dir/sources/operaciones.c.obj	ee75be249fc6788e
+45	229	7630797608790794	CMakeFiles/aplicacionFinanciera.dir/sources/transacciones/compra.c.obj	d5ecc2cb686b95c5
+11	1085	7630797608446087	CMakeFiles/aplicacionFinanciera.dir/sources/menu.c.obj	b5d118ad678b6953
+1085	1213	7630797619188939	aplicacionFinanciera.exe	62e8411d097c4d1c
