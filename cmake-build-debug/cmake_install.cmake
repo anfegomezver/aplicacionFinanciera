@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/GYZ_SENA/CLionProjects/aplicacionFinanciera
+# Install script for directory: C:/Users/anfeg/OneDrive/Documentos/Proyectos en c/aplicacionFinanciera
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -52,6 +52,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-  file(WRITE "C:/Users/GYZ_SENA/CLionProjects/aplicacionFinanciera/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "C:/Users/anfeg/OneDrive/Documentos/Proyectos en c/aplicacionFinanciera/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

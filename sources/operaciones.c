@@ -1,128 +1,137 @@
-#include "../headers/headersTransaciones/compra.h"
-#include "../headers/estructuras.h"
 #include "../headers/operaciones.h"
+#include "../headers/estructuras.h"
+#include "../headers/headersTransaciones/compra.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <string.h>
+#include <time.h>
 
-void obtenerFechaActual(FechaCreacion* fechaActual)
-{
-	time_t tiempoActual = time(NULL);
-	struct tm* infoTiempo = localtime(&tiempoActual);
+void obtenerFechaActual(FechaCreacion *fechaActual) {
+  time_t tiempoActual = time(NULL);
+  struct tm *infoTiempo = localtime(&tiempoActual);
 
-	fechaActual->dia = infoTiempo->tm_mday;
-	fechaActual->mes = infoTiempo->tm_mon + 1;
-	fechaActual->anio = infoTiempo->tm_year + 1900;
-	fechaActual->hora = infoTiempo->tm_hour;
-	fechaActual->minuto = infoTiempo->tm_min;
-	fechaActual->segundo = infoTiempo->tm_sec;
+  fechaActual->dia = infoTiempo->tm_mday;
+  fechaActual->mes = infoTiempo->tm_mon + 1;
+  fechaActual->anio = infoTiempo->tm_year + 1900;
+  fechaActual->hora = infoTiempo->tm_hour;
+  fechaActual->minuto = infoTiempo->tm_min;
+  fechaActual->segundo = infoTiempo->tm_sec;
 }
 
-void escribirCompraEnArchivo(Transacciones* transaccion)
-{
-	FILE* archivoTransacciones = fopen("../output/Transacciones.txt", "a");
+void escribirCompraEnArchivo(Transacciones *transaccion) {
+  FILE *archivoTransacciones = fopen("../output/Transacciones.txt", "a");
 
-	if (!archivoTransacciones)
-	{
-		printf("No se pudo abrir el archivo de compras para escritura\n");
-		return;
-	}
+  if (!archivoTransacciones) {
+    printf("No se pudo abrir el archivo de compras para escritura\n");
+    return;
+  }
 
-	fprintf(archivoTransacciones, "%d | %.2f | %s | %s | %02d/%02d/%04d %02d:%02d:%02d | %s @\n",
-	        transaccion->referencia, transaccion->datos.monto, transaccion->datos.pan, transaccion->datos.cvv,
-	        transaccion->creacion.dia, transaccion->creacion.mes, transaccion->creacion.anio,
-	        transaccion->creacion.hora, transaccion->creacion.minuto, transaccion->creacion.segundo,
-	        transaccion->estado);
+  fprintf(archivoTransacciones,
+          "%hd | %.2f | %s | %s | %02d/%02d/%04d %02d:%02d:%02d | %s @\n",
+          transaccion->referencia, transaccion->datos.monto,
+          transaccion->datos.pan, transaccion->datos.cvv,
+          transaccion->creacion.dia, transaccion->creacion.mes,
+          transaccion->creacion.anio, transaccion->creacion.hora,
+          transaccion->creacion.minuto, transaccion->creacion.segundo,
+          transaccion->estado);
 
-
-
-	fclose(archivoTransacciones);
+  fclose(archivoTransacciones);
 }
 
-void leerArchivo(Transacciones** transacciones)
-{
-	FILE* file;
-	char c;
-	int contador = 0;
-	file = fopen("../output/Transacciones.txt", "r");
+void limpiarArchivo() {
+  FILE *file = fopen("../output/Transacciones.txt", "w");
 
-	if (file != NULL)
-	{
-		while (!feof(file))
-		{
-			c = fgetc(file);
+  if (file == NULL) {
+    printf("Error al abrir el archivo para limpiar\n");
+    return;
+  }
 
-			if (c == '@')
-			{
-				contador++;
-			}
-		}
-		printf("Lineas: %d\n", contador);
-	}
-	else
-	{
-		printf("Error al abrir el archivo");
-	}
-
-	rewind(file);  // Volvemos al inicio para leerlas
-
-	*transacciones = malloc(contador * sizeof(Transacciones));
-	if (*transacciones == NULL) {
-		printf("El archivo se encuentra vacio\n");
-		fclose(file);
-		return;
-	}
-
-	// Leemos cada transacción directamente
-	char linea[80];
-	for (int i = 0; i < contador; i++) {
-		if (fgets(linea, sizeof(linea), file) != NULL) {
-			// Leemos la transacción, ignorando el @ al final
-			sscanf(linea, "%d | %f | %s | %s | %d/%d/%d %d:%d:%d | %s @",
-				   &transacciones[i]->referencia,
-				   &transacciones[i]->datos.monto,
-				   transacciones[i]->datos.pan,
-				   transacciones[i]->datos.cvv,
-				   &transacciones[i]->creacion.dia,
-				   &transacciones[i]->creacion.mes,
-				   &transacciones[i]->creacion.anio,
-				   &transacciones[i]->creacion.hora,
-				   &transacciones[i]->creacion.minuto,
-				   &transacciones[i]->creacion.segundo,
-				   transacciones[i]->estado);
-		}
-	}
+  fclose(file);
+  printf("Archivo limpiado correctamente.\n");
 }
 
+void obtenerTamArchivo(const char *ruta, int *contador) {
+  FILE *file = fopen(ruta, "r");
+  if (!file) {
+    printf("Error al abrir el archivo\n");
+    *contador = 0;  // Se asigna 0 en caso de error
+    return;
+  }
 
+  *contador = 0;
+  char c;
+  while ((c = fgetc(file)) != EOF) {
+    if (c == '@') {
+      (*contador)++;
+    }
+  }
+  fclose(file);
 
+  printf("Líneas: %d\n", *contador);
+}
 
-void guardarCompra(Datos datosCompra)
-{
-	static short numeroTotalCompras = 1;
+void leerArchivo(Transacciones **transacciones, int *cont) {
+  const char *ruta = "../output/Transacciones.txt";
 
-	if (numeroTotalCompras > 20)
-	{
-		printf("Limite de transacciones alcanzado: 20\n");
-		return;
-	}
+  obtenerTamArchivo(ruta, cont);
 
-	Transacciones* nuevaTransaccion;
-	nuevaTransaccion = malloc(sizeof(Transacciones));
+  if (*cont == 0) {
+    printf("El archivo está vacío o no se pudo leer\n");
+    return;
+  }
 
-	if (nuevaTransaccion == NULL)
-	{
-		printf("Error: No se pudo asignar memoria\n");
-		return;
-	}
+  FILE *file = fopen(ruta, "r");
+  if (!file) {
+    printf("Error al abrir el archivo\n");
+    return;
+  }
 
-	nuevaTransaccion->referencia = numeroTotalCompras;
-	strcpy(nuevaTransaccion->estado, "Compra");
-	nuevaTransaccion->datos = datosCompra;
-	obtenerFechaActual(&nuevaTransaccion->creacion);
+  *transacciones = malloc(*cont * sizeof(Transacciones));
+  if (!*transacciones) {
+    printf("Error al asignar memoria\n");
+    fclose(file);
+    return;
+  }
 
-	escribirCompraEnArchivo(nuevaTransaccion);
+  char linea[80];
+  for (int i = 0; i < *cont; i++) {
+    if (fgets(linea, sizeof(linea), file) != NULL) {
+      sscanf(linea, "%hd | %f | %s | %s | %d/%d/%d %d:%d:%d | %s @",
+             &(*transacciones)[i].referencia, &(*transacciones)[i].datos.monto,
+             (*transacciones)[i].datos.pan, (*transacciones)[i].datos.cvv,
+             &(*transacciones)[i].creacion.dia,
+             &(*transacciones)[i].creacion.mes,
+             &(*transacciones)[i].creacion.anio,
+             &(*transacciones)[i].creacion.hora,
+             &(*transacciones)[i].creacion.minuto,
+             &(*transacciones)[i].creacion.segundo, (*transacciones)[i].estado);
+    }
+  }
+  fclose(file);
+}
 
-	numeroTotalCompras++;
+void guardarCompra(Datos datosCompra) {
+  int contador;
+  obtenerTamArchivo("../output/Transacciones.txt", &contador);
+  contador += 1;
+
+  if (contador> 20) {
+    printf("Límite de transacciones alcanzado: 20\n");
+    return;
+  }
+
+  Transacciones *nuevaTransaccion = malloc(sizeof(Transacciones));
+  if (!nuevaTransaccion) {
+    printf("Error: No se pudo asignar memoria\n");
+    return;
+  }
+
+  nuevaTransaccion->referencia = contador;
+  strcpy(nuevaTransaccion->estado, "Compra");
+  nuevaTransaccion->datos = datosCompra;
+  obtenerFechaActual(&nuevaTransaccion->creacion);
+
+  escribirCompraEnArchivo(nuevaTransaccion);
+
+  free(nuevaTransaccion);
 }

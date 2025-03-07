@@ -3,9 +3,10 @@
 
 #include "../headers/estructuras.h"
 
-extern void obtenerFechaActual(FechaCreacion *fechaActual);
-extern void escribirCompraEnArchivo(Transacciones *transaccion);
-extern void leerArchivo();
-extern void guardarCompra(Datos datosCompra);
+void obtenerFechaActual(FechaCreacion *fechaActual);
+void escribirCompraEnArchivo(Transacciones *transaccion);
+void leerArchivo(Transacciones**, int*);
+void guardarCompra(Datos datosCompra);
+void limpiarArchivo();
 
 #endif

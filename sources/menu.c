@@ -13,7 +13,7 @@ void menu(){
 
     short opcion;
     do{
-        printf("Ingrese la operacion que desea realizar:\n1 - Compra\n2 - Anulacion\n3 - Cierre (Salir)\n4 - Reimpresion\n5 - Reporte total\n");
+        printf("************ MENU ************\n\n1 - Compra\n2 - Anulacion\n3 - Cierre \n4 - Reimpresion\n5 - Reporte total\n6 - Salir\n\n******************************\n\nIngrese una opcion del menu: ");
         scanf("%hd", &opcion);
         fflush(stdin);
         switch(opcion){
@@ -48,9 +48,11 @@ void menu(){
         case 5:
             system("cls");
             crearReporteTotal();
-            leerArchivo();
             printf("Presiona una tecla para continuar...\n");
             getch();
+            system("cls");
+            break;
+        case 6:
             system("cls");
             break;
         default:
@@ -60,7 +62,8 @@ void menu(){
             getch();
             system("cls");
         }
-    }while(opcion != 3);
+    }while(opcion != 6);
 
-    printf("Fin del programa.\n");
+    printf("Fin del programa.\n\n\nIngrese cualquier tecla para cerrar esta ventana...");
+    getch();
 }
