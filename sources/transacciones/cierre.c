@@ -33,12 +33,21 @@ void cerrar()
             limpiarArchivo();
 
             printf("Se borro el historico de transacciones.\n");
+            printf("\nPresiona una tecla para continuar...");
+            getch();
+            system("cls");
             break;
         case '2':
             printf("Volviendo al menu...\n");
+            printf("\nPresiona una tecla para continuar...");
+            getch();
+            system("cls");
 
             return;
         default: printf("Opcion incorrecta.\n");
+            printf("\nPresiona una tecla para continuar...");
+            getch();
+            system("cls");
         }
     }
 

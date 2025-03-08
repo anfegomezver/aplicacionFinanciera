@@ -272,3 +272,93 @@ int esValidaTarjeta(char* mes, char* anio)
 
 	return 0;
 }
+
+int esReal(int cantidadCaracteres, char* pan)
+{
+	int numerosTarjeta[cantidadCaracteres];
+
+	for (int i = 0; i < cantidadCaracteres; i++)
+	{
+		numerosTarjeta[i]=atoi(pan[i]);
+	}
+
+	int algoritmo[]={2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1};
+	int sum=0;
+
+	for (int i = 0; i < cantidadCaracteres; i++)
+	{
+		if (numerosTarjeta[i] >=5)
+		{
+			sum+= numerosTarjeta[i];
+		}else
+		{
+			sum+= algoritmo[i]*numerosTarjeta[i];
+		}
+	}
+		if (sum%10==0)
+		{
+			return 1;
+		}
+		return 0;
+}
+
+int tipoTarjeta(char* pan)
+{
+	int cantidadCaracteres = strlen(pan);
+
+	char digitosTrajeta[4];
+	for (int i = 0; i < 4; i++)
+	{
+		digitosTrajeta[i] = pan[i];
+	}
+	int digitos = atoi(digitosTrajeta);
+
+	switch (cantidadCaracteres)
+	{
+	case 14:
+		digitos = digitos/10;
+		if ((digitos>=300 && digitos<=305)||(digitos==309) || ((digitos/10)==36) || ((digitos/10)==38) || ((digitos/10)==39))
+		{
+			if (esReal(cantidadCaracteres, pan))
+			{
+				printf("Tu tarjeta es Diners Club International");
+				return 1;
+			}
+		}
+		printf("Tu tarjeta es FALSA");
+		return 0;
+	case 15:
+
+		if (pan[0]==3 && ((pan[1]==7)||(pan[1]==4)))
+		{
+			if (esReal(cantidadCaracteres, pan))
+			{
+				printf("Tu tarjeta es AMERICAN EXPRESS");
+				return 1;
+			}
+		}
+		printf("Tu tarjeta es FALSA");
+		return 0;
+	case 16:
+
+		if (pan[0]==4)
+		{
+			if (esReal(cantidadCaracteres, pan))
+			{
+				printf("Tu tarjeta es VISA");
+				return 1;
+			}
+		}else if (((digitos/100)>=51 && (digitos/100)<=55) || ((digitos)>=2221 && (digitos)<=2720))
+		{
+			if (esReal(cantidadCaracteres, pan))
+			{
+				printf("Tu tarjeta es MASTERCAD");
+				return 1;
+			}
+		}
+		printf("Tu tarjeta es FALSA");
+		return 0;
+	default: printf("La numero de tarjeta no es valido.\n");
+		return 0;
+	}
+}
