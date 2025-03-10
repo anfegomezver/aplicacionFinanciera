@@ -33,9 +33,9 @@ void escribirCompraEnArchivo(Transacciones* transaccion)
   }
 
   fprintf(archivoTransacciones,
-          "%hd | %.2f | %s | %s | %02d/%02d/%04d %02d:%02d:%02d | %s @\n",
+          "%hd | %.2f | %s | %s | %s/%s | %02d/%02d/%04d %02d:%02d:%02d | %s @\n",
           transaccion->referencia, transaccion->datos.monto,
-          transaccion->datos.pan, transaccion->datos.cvv,
+          transaccion->datos.pan, transaccion->datos.cvv, transaccion->datos.fecha.mes, transaccion->datos.fecha.anio,
           transaccion->creacion.dia, transaccion->creacion.mes,
           transaccion->creacion.anio, transaccion->creacion.hora,
           transaccion->creacion.minuto, transaccion->creacion.segundo,
@@ -105,14 +105,14 @@ void leerArchivo(Transacciones** transacciones, int* cont)
     return;
   }
 
-  char linea[80];
+  char linea[100];
   for (int i = 0; i < *cont; i++)
   {
     if (fgets(linea, sizeof(linea), file) != NULL)
     {
-      sscanf(linea, "%hd | %f | %s | %s | %d/%d/%d %d:%d:%d | %s @",
+      sscanf(linea, "%hd | %f | %16s | %4s | %2s/%4s | %d/%d/%d %d:%d:%d | %s @",
              &(*transacciones)[i].referencia, &(*transacciones)[i].datos.monto,
-             (*transacciones)[i].datos.pan, (*transacciones)[i].datos.cvv,
+             (*transacciones)[i].datos.pan, (*transacciones)[i].datos.cvv, (*transacciones)[i].datos.fecha.mes, (*transacciones)[i].datos.fecha.anio,
              &(*transacciones)[i].creacion.dia,
              &(*transacciones)[i].creacion.mes,
              &(*transacciones)[i].creacion.anio,
