@@ -234,6 +234,9 @@ void crearCompra()
 	strcpy(fechaTarjeta->mes, mes);
 	strcpy(fechaTarjeta->anio, anio);
 
+	strcpy(datos->fecha.mes,fechaTarjeta->mes);
+	strcpy(datos->fecha.anio,fechaTarjeta->anio);
+
 	guardarCompra(*datos);
 
 	system("cls");

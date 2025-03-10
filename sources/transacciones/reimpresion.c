@@ -25,11 +25,13 @@ void reimprimir()
 
             printf("\n\n-------------------------------------------------------\n\n");
             printf(
-                "Referencia: %hd\nMonto: $%.2f\nPAN: **** **** **** %s\nCCV: %s\nFecha y hora de la transaccion: %02d/%02d/%04d %02d:%02d:%02d\nEstado: %s",
+                "Referencia: %hd\nMonto: $%.2f\nPAN: **** **** **** %s\nCCV: %s\nFecha tarjeta: %s/%s\nFecha y hora de la transaccion: %02d/%02d/%04d %02d:%02d:%02d\nEstado: %s",
                 transacciones[i].referencia,
                 transacciones[i].datos.monto,
                 digitosTrajeta,
                 transacciones[i].datos.cvv,
+                transacciones[i].datos.fecha.mes,
+                transacciones[i].datos.fecha.anio,
                 transacciones[i].creacion.dia,
                 transacciones[i].creacion.mes,
                 transacciones[i].creacion.anio,
