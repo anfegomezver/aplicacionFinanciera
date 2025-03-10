@@ -29,27 +29,20 @@ void menu()
             break;
         case 2:
             system("cls");
-            anularCompra();
+            //anularCompra();
             printf("\nPresiona una tecla para continuar...");
             getch();
             system("cls");
             break;
         case 3:
             system("cls");
-            cerrar();
-            int cont;
-            obtenerTamArchivo("../output/Transacciones.txt", &cont);
-            if (cont != 0)
-            {
-                printf("\nPresiona una tecla para continuar...");
-                getch();
-                system("cls");
-            }
+            //cerrar();
+
 
             break;
         case 4:
             system("cls");
-            reimprimir();
+            //reimprimir();
             printf("\nPresiona una tecla para continuar...");
             getch();
             system("cls");
@@ -57,7 +50,7 @@ void menu()
         case 5:
             system("cls");
             printf("******** REPORTE TOTAL ********\n\n");
-            crearReporteTotal();
+            //crearReporteTotal();
             printf("\nPresiona una tecla para continuar...");
             getch();
             system("cls");
