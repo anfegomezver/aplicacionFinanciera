@@ -11,51 +11,53 @@
 
 void menu()
 {
-    short opcion;
+    char opcion[3];
     do
     {
         printf(
             "************ MENU ************\n\n1 - Compra\n2 - Anulacion\n3 - Cierre \n4 - Reimpresion\n5 - Reporte total\n6 - Salir\n\n******************************\n\nIngrese una opcion del menu: ");
-        scanf("%hd", &opcion);
-        fflush(stdin);
-        switch (opcion)
+        scanf("%s", &opcion);
+        while (getchar() != '\n');
+        if ((int)strlen(opcion) != 1)
         {
-        case 1:
+            opcion[0] = 'x';
+        }
+        switch (opcion[0])
+        {
+        case '1':
             system("cls");
             crearCompra();
             printf("\nPresiona una tecla para continuar...");
             getch();
             system("cls");
             break;
-        case 2:
+        case '2':
             system("cls");
-            //anularCompra();
+            anularCompra();
             printf("\nPresiona una tecla para continuar...");
             getch();
             system("cls");
             break;
-        case 3:
+        case '3':
             system("cls");
-            //cerrar();
-
-
-            break;
-        case 4:
-            system("cls");
-            //reimprimir();
+            cerrar();
             printf("\nPresiona una tecla para continuar...");
             getch();
             system("cls");
             break;
-        case 5:
+        case '4':
             system("cls");
-            printf("******** REPORTE TOTAL ********\n\n");
-            //crearReporteTotal();
+            reimprimir();
+            system("cls");
+            break;
+        case '5':
+            system("cls");
+            crearReporteTotal();
             printf("\nPresiona una tecla para continuar...");
             getch();
             system("cls");
             break;
-        case 6:
+        case '6':
             system("cls");
             break;
         default:
@@ -67,7 +69,7 @@ void menu()
             system("cls");
         }
     }
-    while (opcion != 6);
+    while (opcion[0] != '6');
 
     printf("Fin del programa.\n\n\nIngrese cualquier tecla para cerrar esta ventana...");
     getch();

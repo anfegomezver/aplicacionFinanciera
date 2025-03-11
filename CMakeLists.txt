@@ -8,8 +8,6 @@ add_executable(aplicacionFinanciera sources/main.c
         headers/menu.h
         sources/operaciones.c
         headers/operaciones.h
-        sources/validaciones.c
-        headers/validaciones.h
         sources/transacciones/anulacion.c
         headers/headersTransaciones/anulacion.h
         sources/transacciones/cierre.c

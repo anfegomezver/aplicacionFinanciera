@@ -15,7 +15,7 @@ typedef struct
 
 typedef struct Transacciones
 {
-    short referencia;
+    int referencia;
     char estado[8];
     Datos datos;
     FechaCreacion creacion;

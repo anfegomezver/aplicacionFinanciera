@@ -7,8 +7,8 @@
 #include <time.h>
 #include "conio.h"
 
-void obtenerFechaActual(FechaCreacion* fechaActual){
-
+void obtenerFechaActual(FechaCreacion* fechaActual)
+{
   time_t tiempoActual = time(NULL);
 
   struct tm* infoTiempo = localtime(&tiempoActual);
@@ -21,18 +21,45 @@ void obtenerFechaActual(FechaCreacion* fechaActual){
   fechaActual->segundo = infoTiempo->tm_sec;
 }
 
-void escribirCompraEnArchivo(Transacciones* transaccion){
+void cantidadLineasArchivo(int* lineas)
+{
+  FILE* file = fopen("../output/Transacciones.txt", "r");
+  if (!file)
+  {
+    printf("\nError al abrir el archivo.\n");
+    *lineas = 0;
+    return;
+  }
 
+  *lineas = 0;
+
+  int c;
+
+  while ((c = fgetc(file)) != EOF)
+  {
+    if (c == '\n')
+    {
+      (*lineas)++;
+    }
+  }
+
+  fclose(file);
+}
+
+
+void escribirCompraEnArchivo(Transacciones* transaccion)
+{
   FILE* archivoTransacciones = fopen("../output/Transacciones.txt", "a");
 
-  if (!archivoTransacciones){
-    printf("No se pudo abrir el archivo de compras para escritura\n");
+  if (!archivoTransacciones)
+  {
+    printf("\nNo se pudo abrir el archivo de compras para escritura\n");
     return;
   }
 
   fprintf(archivoTransacciones,
-          "%hd | %.2f | %s | %s | %s | %s/%s | %02d/%02d/%04d %02d:%02d:%02d | %s \n",
-          transaccion->referencia, transaccion->datos.monto,transaccion->datos.tipoT,
+          "%-4hd | %-13.2f | %-25s | %-16s | %-4s | %s/%s | %02d/%02d/%04d %02d:%02d:%02d | %s \n",
+          transaccion->referencia, transaccion->datos.monto, transaccion->datos.tipoT,
           transaccion->datos.pan, transaccion->datos.cvv, transaccion->datos.fecha.mes, transaccion->datos.fecha.anio,
           transaccion->creacion.dia, transaccion->creacion.mes,
           transaccion->creacion.anio, transaccion->creacion.hora,
@@ -44,14 +71,17 @@ void escribirCompraEnArchivo(Transacciones* transaccion){
 
 void guardarCompra(Datos datosCompra)
 {
+  int cantidadLineas;
+  cantidadLineasArchivo(&cantidadLineas);
+
   Transacciones* nuevaTransaccion = malloc(sizeof(Transacciones));
   if (!nuevaTransaccion)
   {
-    printf("Error al asignar memoria\n");
+    printf("\nError al asignar memoria\n");
     return;
   }
 
-  nuevaTransaccion->referencia = 0;
+  nuevaTransaccion->referencia = cantidadLineas + 1;
   strcpy(nuevaTransaccion->estado, "Compra");
   nuevaTransaccion->datos = datosCompra;
   obtenerFechaActual(&nuevaTransaccion->creacion);

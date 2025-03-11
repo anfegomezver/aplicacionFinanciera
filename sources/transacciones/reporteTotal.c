@@ -1,9 +1,54 @@
 #include "../../headers/headersTransaciones/reporteTotal.h"
-#include "../../headers/estructuras.h"
 #include "../../headers/operaciones.h"
-#include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
-void crearReporteTotal(){}
+void crearReporteTotal()
+{
+    FILE* file = fopen("../output/Transacciones.txt", "r");
+    if (!file)
+    {
+        printf("Error al abrir el archivo.\n");
+        return;
+    }
+
+    printf("********************** REPORTE TOTAL **********************\n\n");
+
+
+    int cantidadLineas;
+    cantidadLineasArchivo(&cantidadLineas);
+
+    if (cantidadLineas == 0)
+    {
+        printf("Aun no se han realizado transacciones.\n");
+        return;
+    }
+
+    float monto;
+    char estado[20];
+
+    float total = 0;
+    int cantCompras = 0;
+    int cantAnulaciones = 0;
+
+    while (fscanf(file, "%*d | %f | %*[^|] | %*[^|] | %*[^|] | %*[^|] | %*d/%*d/%*d %*d:%*d:%*d | %s",
+                  &monto, estado) == 2)
+    {
+        total += monto;
+        if (strcmp(estado, "Compra") == 0)
+        {
+            cantCompras++;
+        }
+        else
+        {
+            cantAnulaciones++;
+        }
+    }
+
+    fclose(file);
+
+    printf("Transacciones realizadas: %d\n", cantidadLineas);
+    printf("\nCantidad de compras: %d\n", cantCompras);
+    printf("\nCantidad de anulaciones: %d\n", cantAnulaciones);
+    printf("\nTotal en compras: $%.2f\n", total);
+}

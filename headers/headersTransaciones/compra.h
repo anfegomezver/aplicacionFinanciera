@@ -21,5 +21,6 @@ int validarCaracteres(char []);
 int esValidaTarjeta(char*, char*);
 int tipoTarjeta(char*,int*,char*);
 int esReal(int, char*);
+int validarCaracteres(char*);
 
 #endif
