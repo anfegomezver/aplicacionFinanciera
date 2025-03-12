@@ -1,231 +1,179 @@
 #include <stdio.h>
 #include "../../headers/headersTransaciones/compra.h"
 #include "../../headers/operaciones.h"
-#include "../../headers/validaciones.h"
 #include "../../headers/estructuras.h"
 #include <stdlib.h>
 #include <string.h>
-#include <conio.h>
 
 void crearCompra()
 {
-	const int limite = 20;
-	const char* ruta = "../output/Transacciones.txt";
-	int cont;
-	obtenerTamArchivo(ruta, &cont);
+	printf("********************** COMPRA **********************\n\n");
 
-	if (cont >= limite)
+	Datos* datos = malloc(sizeof(Datos));
+
+
+	int limiteCompras = 20;
+	int cantidadLineas;
+	cantidadLineasArchivo(&cantidadLineas);
+
+	if (cantidadLineas==-1)
 	{
-		printf("*********** COMPRA ***********\n\n");
-		printf("Limite alcanzado: %d\n\n\n", limite);
 		return;
 	}
 
+	if (cantidadLineas > limiteCompras)
+	{
+		printf("Limite de compras alcanzado.\n");
+		return;
+	}
 
-	Datos* datos = malloc(sizeof(Datos));
-	FechaTarjeta* fechaTarjeta = malloc(sizeof(FechaTarjeta));
+	//Ingresar monto
 
-	char monto[11];
-	printf("*********** COMPRA ***********\n\n");
-	printf("Ingrese el monto (solo se toman en cuenta 2 cifras decimales. MAX 7 cifras ejm:xxxxxxx.xx): ");
-	scanf("%10s", monto);
+	char monto[15];
 
-	fflush(stdin);
+	printf("Ingrese el monto: ");
+	scanf("%14s", monto);
 
-	short contadorPunto = 0;
-	short posicionPunto;
-	short puntoAlFinal = 0;
+	while (getchar() != '\n');
+
+	int contadorPunto = 0;
+	int posicionPunto = -1;
+
+	if ((monto[0] == '0' && monto[1] != '.' && monto[1] != '\0') || monto[0] == '.')
+	{
+		printf("\nValor no permitido.\n");
+		return;
+	}
+
 	for (int i = 0; i < ((int)(strlen(monto))); i++)
 	{
 		if ((monto[i] < '0' || monto[i] > '9') && monto[i] != '.')
 		{
-			system("cls");
-			printf("*********** COMPRA ***********\n\n");
-
-			printf("Caracteres invalidos\n");
+			printf("\nCaracteres invalidos.\n");
 			return;
 		}
 		else if (monto[i] == '.')
 		{
 			contadorPunto++;
+			if (contadorPunto >= 2)
+			{
+				printf("\nCaracteres invalidos.\n");
+				return;
+			}
 			posicionPunto = i;
 		}
-		else if (i == ((int)(strlen(monto) - 1)))
-		{
-			posicionPunto = i;
-		}
-		if ('.' == monto[((int)(strlen(monto) - 1))])
-		{
-			puntoAlFinal = 1;
-		}
-		if (contadorPunto >= 2)
-		{
-			system("cls");
-			printf("*********** COMPRA ***********\n\n");
-
-			printf("Caracteres invalidos\n");
-			return;
-		}
 	}
-	if (contadorPunto == 0 && strlen(monto) > 7)
-	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
 
-		printf("Tamano no permitido\n");
+	if (contadorPunto == 0)
+	{
+		posicionPunto = strlen(monto);
+	}
+
+	if ((contadorPunto == 0 && strlen(monto) > 10) || (contadorPunto == 1 && posicionPunto > 11))
+	{
+		printf("\nTamano no permitido.\n");
 		return;
 	}
 
-	if (posicionPunto == ((int)(strlen(monto) - 1)))
-	{
-		datos->monto = atof(monto);
-	}
-	else if (posicionPunto > 6)
-	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
+	datos->monto = atof(monto);
 
-		printf("Tamano no permitido\n");
+
+	//Ingresar PAN
+
+	char pan[18];
+	int cantDigitosCvv = 3;
+	char tipoT[27];
+
+	printf("\nIngrese el pan de la tarjeta: ");
+	scanf("%17s", pan);
+
+	while (getchar() != '\n');
+	if (validarCaracteres(pan))
+	{
+		printf("\nCaracter invalido.\n");
 		return;
 	}
-	else if (puntoAlFinal)
+	else if (tipoTarjeta(pan, &cantDigitosCvv, tipoT) == 0)
 	{
-		char cadenaMonto[posicionPunto - 1];
-		for (int i = 0; i < posicionPunto - 1; i++)
-		{
-			cadenaMonto[i] = monto[i];
-		}
-		datos->monto = atof(cadenaMonto);
-	}
-	else
-	{
-		char cadenaMonto[posicionPunto + 2];
-		for (int i = 0; i < posicionPunto + 2; i++)
-		{
-			cadenaMonto[i] = monto[i];
-		}
-		datos->monto = atof(cadenaMonto);
-	}
-
-	system("cls");
-	printf("*********** COMPRA ***********\n\n");
-
-	printf("Ingrese el PAN de la tarjeta (si sobrepasas el limite se tomaran los primeros 16 digitos): ");
-	scanf("%16s", datos->pan);
-
-	fflush(stdin);
-	if (validarCaracteres(datos->pan))
-	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
-
-		printf("Ingresaste un caracter invalido.\n");
-		return;
-	}
-	else if (validarTamano(datos->pan, 16))
-	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
-
-		printf("El pan de la tarjeta esta incompleto.\n");
-		return;
-	}
-	system("cls");
-	printf("*********** COMPRA ***********\n\n");
-
-	printf("Tu tarjeta registrada es: %s\n\n", datos->pan);
-
-	printf("Ingrese cualquier tecla para continuar... ");
-	getch();
-	system("cls");
-	printf("*********** COMPRA ***********\n\n");
-
-	printf("Ingrese el cvv de la tarjeta (si sobrepasas el limite se tomaran los primeros 3 digitos): ");
-	scanf("%3s", datos->cvv);
-
-	fflush(stdin);
-
-	if (validarCaracteres(datos->cvv))
-	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
-
-		printf("Ingresaste un caracter invalido.\n");
-		return;
-	}
-	else if (validarTamano(datos->cvv, 3))
-	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
-
-		printf("El pan de la tarjeta esta incompleto.\n");
 		return;
 	}
 
-	char anio[5];
-	char mes[3];
+	strcpy(datos->pan, pan);
+	strcpy(datos->tipoT, tipoT);
+	printf("\nTipo de tarjeta: %s\n", tipoT);
 
-	system("cls");
-	printf("*********** COMPRA ***********\n\n");
+	//Ingresar cvv
 
-	printf("A continuacion ingresara la fecha de vencimiento de la tarjeta.\n\nIngrese el mes (en num ejm: 01,02): ");
-	scanf("%2s", mes);
-	fflush(stdin);
+	char cvv[5];
+
+	printf("\nIngrese el cvv de la tarjeta: ");
+	scanf("%4s", cvv);
+	while (getchar() != '\n');
+
+	if (strlen(cvv) != cantDigitosCvv)
+	{
+		printf("\nTamano no permitido.\n");
+		return;
+	}
+
+	if (validarCaracteres(cvv))
+	{
+		printf("\nCaracter invalido.\n");
+		return;
+	}
+
+	strcpy(datos->cvv, cvv);
+
+	//Ingresar fecha
+
+	FechaTarjeta* fechaTarjeta = malloc(sizeof(FechaTarjeta));
+
+	char anio[6];
+	char mes[4];
+
+	printf("\nIngrese el mes (Ejm: 01,02, ... , 12): ");
+	scanf("%3s", mes);
+	while (getchar() != '\n');
+
+	if ((int)strlen(mes) != 2)
+	{
+		printf("\nTamano no permitido.\n");
+		return;
+	}
 
 	if (validarCaracteres(mes))
 	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
-
-		printf("Ingresaste un caracter invalido.\n");
+		printf("\nCaracter invalido.\n");
 		return;
 	}
-	else if (validarTamano(mes, 2))
-	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
 
-		printf("El mes esta incompleto.\n");
-		return;
-	}
-	if (atoi(mes) > 12)
+	if (atoi(mes) > 12 || atoi(mes) == 0)
 	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
-
-		printf("El mes esta mal digitado.\n");
+		printf("\nRango no permitido.\n");
 		return;
 	}
 
 	printf("\nIngrese el anio (4 digitos): ");
-	scanf("%4s", anio);
-	fflush(stdin);
+	scanf("%5s", anio);
+	while (getchar() != '\n');
 
 	if (validarCaracteres(anio))
 	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
-
-		printf("Ingresaste un caracter invalido.\n");
+		printf("\nCaracter invalido.\n");
 		return;
 	}
-	else if (validarTamano(anio, 4))
+
+	if ((int)strlen(anio) != 4)
 	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
-
-		printf("El anio esta incompleto.\n");
+		printf("\nTamano no permitido.\n");
 		return;
 	}
-	if (atoi(anio) < 2000 || atoi(anio) > 2060)
+
+	if (atoi(anio) < 2000 || atoi(anio) > 2300)
 	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
-
-		printf("El anio esta mal digitado.\n");
+		printf("\nRango no permitido.\n");
 		return;
 	}
-
 
 	if (esValidaTarjeta(mes, anio))
 	{
@@ -234,16 +182,18 @@ void crearCompra()
 	strcpy(fechaTarjeta->mes, mes);
 	strcpy(fechaTarjeta->anio, anio);
 
-	strcpy(datos->fecha.mes,fechaTarjeta->mes);
-	strcpy(datos->fecha.anio,fechaTarjeta->anio);
+	strcpy(datos->fecha.mes, fechaTarjeta->mes);
+	strcpy(datos->fecha.anio, fechaTarjeta->anio);
 
 	guardarCompra(*datos);
 
-	system("cls");
-	printf("*********** COMPRA ***********\n\n");
+	printf("\nCOMPRA REGISTRADA EXITOSAMENTE.\n");
 
-	printf("COMPRA REGISTRADA EXITOSAMENTE\n");
+	free(fechaTarjeta);
+	free(datos);
 }
+
+//Validaciones de tarjeta
 
 int esValidaTarjeta(char* mes, char* anio)
 {
@@ -258,20 +208,123 @@ int esValidaTarjeta(char* mes, char* anio)
 
 	if (anioT < anioActual)
 	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
-
-		printf("Tarjeta no valida: año menor al actual.\n");
+		printf("\nFecha no valida.\n");
 		return 1;
 	}
 
 	if (anioT == anioActual && mesT < mesActual)
 	{
-		system("cls");
-		printf("*********** COMPRA ***********\n\n");
-		printf("Tarjeta no valida: mes menor al actual.\n");
+		printf("\nFecha no valida.\n");
 		return 1;
 	}
 
+	return 0;
+}
+
+int esReal(int cantidadCaracteres, char* pan)
+{
+	int numerosTarjeta[cantidadCaracteres];
+
+	for (int i = 0; i < cantidadCaracteres; i++)
+	{
+		numerosTarjeta[i] = pan[i] - '0';
+	}
+
+	int sum = 0;
+	int aux = 0;
+
+	for (int i = 0; i < cantidadCaracteres; i++)
+	{
+		int index = cantidadCaracteres - 1 - i;
+		int valor = numerosTarjeta[index];
+
+		if (i % 2 == 1)
+		{
+			aux = valor * 2;
+			sum += (aux / 10) + (aux % 10);
+		}
+		else
+		{
+			sum += valor;
+		}
+	}
+	return (sum % 10 == 0) ? 1 : 0;
+}
+
+int tipoTarjeta(char* pan, int* cantCvv, char* tipoT)
+{
+	int cantidadCaracteres = strlen(pan);
+
+	char digitosTarjeta[5];
+
+	for (int i = 0; i < 4; i++)
+	{
+		digitosTarjeta[i] = pan[i];
+	}
+
+	int digitos = atoi(digitosTarjeta);
+
+	switch (cantidadCaracteres)
+	{
+	case 14:
+		digitos = digitos / 10;
+		if ((digitos >= 300 && digitos <= 305) || (digitos == 309) || ((digitos / 10) == 36) || ((digitos / 10) == 38)
+			|| ((digitos / 10) == 39))
+		{
+			if (esReal(cantidadCaracteres, pan))
+			{
+				strcpy(tipoT, "Diners Club International");
+				return 1;
+			}
+		}
+		printf("\nTarjeta no valida.\n");
+		return 0;
+	case 15:
+
+
+		if ((digitos / 100 == 37) || (digitos / 100 == 34))
+		{
+			if (esReal(cantidadCaracteres, pan))
+			{
+				strcpy(tipoT, "American Express");
+				*cantCvv = 4;
+				return 1;
+			}
+		}
+		printf("\nTarjeta no valida.\n");
+		return 0;
+	case 16:
+		if (digitos / 1000 == 4)
+		{
+			if (esReal(cantidadCaracteres, pan))
+			{
+				strcpy(tipoT, "Visa");
+				return 1;
+			}
+		}
+		else if (((digitos / 100) >= 51 && (digitos / 100) <= 55) || ((digitos) >= 2221 && (digitos) <= 2720))
+		{
+			if (esReal(cantidadCaracteres, pan))
+			{
+				strcpy(tipoT, "Mastercard");
+				return 1;
+			}
+		}
+		printf("\nTarjeta no valida.\n");
+		return 0;
+	default: printf("\nTamano no permitido.\n");
+		return 0;
+	}
+}
+
+int validarCaracteres(char* cadena)
+{
+	for (int i = 0; cadena[i] != '\0'; i++)
+	{
+		if (cadena[i] < '0' || cadena[i] > '9')
+		{
+			return 1;
+		}
+	}
 	return 0;
 }
