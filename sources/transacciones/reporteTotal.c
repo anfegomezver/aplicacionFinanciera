@@ -1,45 +1,60 @@
 #include "../../headers/headersTransaciones/reporteTotal.h"
-#include "../../headers/estructuras.h"
 #include "../../headers/operaciones.h"
-#include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 void crearReporteTotal()
 {
-
-  Transacciones* transacciones = NULL;
-  int numTransacciones;
-  int contadorCompra = 0, contadorAnulacion = 0;
-  float montoTotal = 0;
-
-  leerArchivo(&transacciones, &numTransacciones);
-
-  if (transacciones != NULL && numTransacciones > 0)
-  {
-    for (int i = 0; i < numTransacciones; i++)
+    FILE* file = fopen("../output/Transacciones.dat", "r");
+    if (!file)
     {
-      if (strcmp(transacciones[i].estado, "Compra") == 0)
-      {
-        contadorCompra++;
-        montoTotal += transacciones[i].datos.monto;
-      }
-      else
-      {
-        contadorAnulacion++;
-      }
+        printf("Error al abrir el archivo.\n");
+        return;
     }
-  }else
-  {
-    return;
-  }
-  if (transacciones != NULL)
-  {
-    printf("Cantidad de transacciones: %d\n\n", numTransacciones);
-    printf("Cantidad de compras: %d\n\n", contadorCompra);
-    printf("Monto total de compras: $%.2f\n\n", montoTotal);
-    printf("Cantidad de anulaciones: %d \n", contadorAnulacion);
-    free(transacciones);
-  }
+
+    printf("********************** REPORTE TOTAL **********************\n\n");
+
+
+    int cantidadLineas;
+    cantidadLineasArchivo(&cantidadLineas);
+
+    if (cantidadLineas==-1)
+    {
+        return;
+    }
+
+    if (cantidadLineas == 0)
+    {
+        printf("Aun no se han realizado transacciones.\n");
+        return;
+    }
+
+    float monto;
+    char estado[20];
+
+    float total = 0;
+    int cantCompras = 0;
+    int cantAnulaciones = 0;
+
+    while (fscanf(file, "%*d | %f | %*[^|] | %*[^|] | %*[^|] | %*[^|] | %*d/%*d/%*d %*d:%*d:%*d | %s",
+                  &monto, estado) == 2)
+    {
+
+        if (strcmp(estado, "Compra") == 0)
+        {
+            cantCompras++;
+            total += monto;
+        }
+        else
+        {
+            cantAnulaciones++;
+        }
+    }
+
+    fclose(file);
+
+    printf("Transacciones realizadas: %d\n", cantidadLineas);
+    printf("\nCantidad de compras: %d\n", cantCompras);
+    printf("\nCantidad de anulaciones: %d\n", cantAnulaciones);
+    printf("\nTotal en compras: $%.2f\n", total);
 }

@@ -4,42 +4,87 @@
 #include "conio.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void cerrar()
 {
-    const char* ruta = "../output/Transacciones.txt";
-    int cont;
-    obtenerTamArchivo(ruta, &cont);
-    char opcion;
-    printf("************ CIERRE *************\n\n");
-    crearReporteTotal();
-    printf("\nPresiona una tecla para continuar...");
-    getch();
-
-    system("cls");
-    printf("************ CIERRE *************\n\n");
-
-    if (cont!=0)
+    FILE* file = fopen("../output/Transacciones.dat", "r");
+    if (!file)
     {
-        printf(
-        "Estas seguro de que quieres realizar el cierre?\n\n1: Si, estoy seguro\n2: No, no estoy seguro\n\nIngrese una opcion: ");
-        scanf("%c", &opcion);
-        fflush(stdin);
-        system("cls");
-        printf("************ CIERRE *************\n\n");
-        switch (opcion)
+        printf("Error al abrir el archivo.\n");
+        return;
+    }
+
+    printf("********************** CIERRE **********************\n\n");
+
+
+    int cantidadLineas;
+    cantidadLineasArchivo(&cantidadLineas);
+    if (cantidadLineas==-1)
+    {
+        return;
+    }
+
+    if (cantidadLineas == 0)
+    {
+        printf("Aun no se han realizado transacciones.\n");
+        return;
+    }
+
+    float monto;
+    char estado[20];
+
+    float total = 0;
+    int cantCompras = 0;
+    int cantAnulaciones = 0;
+
+    while (fscanf(file, "%*d | %f | %*[^|] | %*[^|] | %*[^|] | %*[^|] | %*d/%*d/%*d %*d:%*d:%*d | %s",
+                  &monto, estado) == 2)
+    {
+
+        if (strcmp(estado, "Compra") == 0)
         {
-        case '1':
-            limpiarArchivo();
-
-            printf("Se borro el historico de transacciones.\n");
-            break;
-        case '2':
-            printf("Volviendo al menu...\n");
-
-            return;
-        default: printf("Opcion incorrecta.\n");
+            cantCompras++;
+            total += monto;
+        }
+        else
+        {
+            cantAnulaciones++;
         }
     }
 
+    fclose(file);
+
+    printf("Transacciones realizadas: %d\n", cantidadLineas);
+    printf("\nCantidad de compras: %d\n", cantCompras);
+    printf("\nCantidad de anulaciones: %d\n", cantAnulaciones);
+    printf("\nTotal en compras: $%.2f\n", total);
+
+    char opcion[3];
+    printf("\nDesea realizar el cierre? \n1 - Si\n2 - No\n\nIngrese una opcion: ");
+    scanf("%s", &opcion);
+    while (getchar() != '\n');
+    if ((int)strlen(opcion) != 1)
+    {
+        opcion[0] = 'x';
+    }
+    switch (opcion[0])
+    {
+    case '1':
+        FILE* file2 = fopen("../output/Transacciones.dat", "w");
+
+        if (file2 == NULL)
+        {
+            printf("Error al abrir el archivo.\n");
+            return;
+        }
+
+        fclose(file);
+
+        printf("\nCIERRE REALIZADO CORRECTAMENTE.\n");
+        return;
+    case '2': printf("\nVolveras al menu principal.\n");
+        return;
+    default: printf("\nOpcion no valida.\n");
+    }
 }

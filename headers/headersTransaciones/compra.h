@@ -11,12 +11,16 @@ typedef struct
 {
     float monto;
     char pan[17];
-    char cvv[4];
+    char cvv[5];
+    char tipoT[30];
     FechaTarjeta fecha;
 } Datos;
 
 void crearCompra();
 int validarCaracteres(char []);
 int esValidaTarjeta(char*, char*);
+int tipoTarjeta(char*,int*,char*);
+int esReal(int, char*);
+int validarCaracteres(char*);
 
 #endif
