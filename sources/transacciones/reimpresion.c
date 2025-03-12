@@ -9,6 +9,10 @@ void reimprimir()
 {
     int cantidadLineas;
     cantidadLineasArchivo(&cantidadLineas);
+    if (cantidadLineas==-1)
+    {
+        return;
+    }
 
     if (cantidadLineas == 0)
     {
@@ -19,7 +23,7 @@ void reimprimir()
         return;
     }
 
-    FILE* file = fopen("../output/Transacciones.txt", "r");
+    FILE* file = fopen("../output/Transacciones.dat", "r");
     if (!file)
     {
         printf("Error al abrir el archivo.\n");
@@ -45,29 +49,35 @@ void reimprimir()
         system("cls");
         printf("********************** REIMPRESION **********************\n\n\n");
 
-        printf("%-4s | %-13s | %-25s | %-16s | %-4s | %-7s | %-19s | %-8s\n",
+        printf("%-4s | %-13s | %-26s | %-16s | %-4s | %-7s | %-19s | %-8s\n",
                "Ref", "Monto", "Tipo Tarjeta", "PAN", "CVV", "Expira", "Creacion", "Estado");
         printf(
             "---------------------------------------------------------------------------------------------------------------------\n");
-        printf("%s\n\n", transacciones[j]);
+
 
         //-------------------------------------------------------------------------------------
         int referencia;
         float monto;
-        char tipoT[27], pan[17], cvv[4], expira[8], creacion[20], estado[8];
+        char tipoT[27], pan[17], cvv[5], expira[8], creacion[20], hora[20], estado[8];
 
-        sscanf(transacciones[j], "%d | %f | %s | %16s | %s | %s | %s | %8[^\n]",
-                       &referencia, &monto, tipoT, pan, cvv, expira, creacion, estado);
+        sscanf(transacciones[j], "%d | %f | %[^|] | %s | %s | %s | %s %s | %s",
+                       &referencia, &monto, tipoT, pan, cvv, expira, creacion, hora, estado);
 
-        printf("Referencia: %d\n", referencia);
-        printf("Monto: %.2f\n", monto);
-        printf("Tipo de Tarjeta: %s\n", tipoT);
-        printf("PAN: %s\n", pan);
-        printf("CVV: %s\n", cvv);
-        printf("Fecha de Expiracion: %s\n", expira);
-        printf("Fecha de Creacion: %s\n", creacion);
-        printf("Estado: %s\n", estado);
-        printf("\n---------------------------------\n");
+        char panEnmascarado[17];
+        for (int p = 0; p < strlen(pan); p++)
+        {
+            if ((p>=4)&&(p<(strlen(pan)-4)))
+            {
+                panEnmascarado[p] = '*';
+                continue;
+            }
+            panEnmascarado[p] = pan[p];
+        }
+
+        panEnmascarado[strlen(pan)] = '\0';
+
+        printf("%-4d | %-13.2f | %-26s | %-16s | %-4s | %s | %s %s | %s \n\n",
+       referencia, monto, tipoT, panEnmascarado, cvv, expira, creacion,hora, estado);
 
         //-------------------------------------------------------------------------------------
 

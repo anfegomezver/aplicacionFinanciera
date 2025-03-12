@@ -5,7 +5,7 @@
 
 void crearReporteTotal()
 {
-    FILE* file = fopen("../output/Transacciones.txt", "r");
+    FILE* file = fopen("../output/Transacciones.dat", "r");
     if (!file)
     {
         printf("Error al abrir el archivo.\n");
@@ -17,6 +17,11 @@ void crearReporteTotal()
 
     int cantidadLineas;
     cantidadLineasArchivo(&cantidadLineas);
+
+    if (cantidadLineas==-1)
+    {
+        return;
+    }
 
     if (cantidadLineas == 0)
     {
@@ -34,10 +39,11 @@ void crearReporteTotal()
     while (fscanf(file, "%*d | %f | %*[^|] | %*[^|] | %*[^|] | %*[^|] | %*d/%*d/%*d %*d:%*d:%*d | %s",
                   &monto, estado) == 2)
     {
-        total += monto;
+
         if (strcmp(estado, "Compra") == 0)
         {
             cantCompras++;
+            total += monto;
         }
         else
         {

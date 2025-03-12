@@ -23,11 +23,11 @@ void obtenerFechaActual(FechaCreacion* fechaActual)
 
 void cantidadLineasArchivo(int* lineas)
 {
-  FILE* file = fopen("../output/Transacciones.txt", "r");
+  FILE* file = fopen("../output/Transacciones.dat", "r");
   if (!file)
   {
     printf("\nError al abrir el archivo.\n");
-    *lineas = 0;
+    *lineas = -1;
     return;
   }
 
@@ -49,7 +49,7 @@ void cantidadLineasArchivo(int* lineas)
 
 void escribirCompraEnArchivo(Transacciones* transaccion)
 {
-  FILE* archivoTransacciones = fopen("../output/Transacciones.txt", "a");
+  FILE* archivoTransacciones = fopen("../output/Transacciones.dat", "a");
 
   if (!archivoTransacciones)
   {
@@ -58,7 +58,7 @@ void escribirCompraEnArchivo(Transacciones* transaccion)
   }
 
   fprintf(archivoTransacciones,
-          "%-4hd | %-13.2f | %-25s | %-16s | %-4s | %s/%s | %02d/%02d/%04d %02d:%02d:%02d | %s \n",
+          "%-4hd | %-13.2f | %-25s | %-16s | %-4s | %s/%s | %02d/%02d/%04d %02d:%02d:%02d | %-8s \n",
           transaccion->referencia, transaccion->datos.monto, transaccion->datos.tipoT,
           transaccion->datos.pan, transaccion->datos.cvv, transaccion->datos.fecha.mes, transaccion->datos.fecha.anio,
           transaccion->creacion.dia, transaccion->creacion.mes,

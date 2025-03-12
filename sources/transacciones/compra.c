@@ -16,6 +16,11 @@ void crearCompra()
 	int cantidadLineas;
 	cantidadLineasArchivo(&cantidadLineas);
 
+	if (cantidadLineas==-1)
+	{
+		return;
+	}
+
 	if (cantidadLineas > limiteCompras)
 	{
 		printf("Limite de compras alcanzado.\n");

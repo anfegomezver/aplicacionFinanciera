@@ -8,7 +8,7 @@
 
 void cerrar()
 {
-    FILE* file = fopen("../output/Transacciones.txt", "r");
+    FILE* file = fopen("../output/Transacciones.dat", "r");
     if (!file)
     {
         printf("Error al abrir el archivo.\n");
@@ -20,6 +20,10 @@ void cerrar()
 
     int cantidadLineas;
     cantidadLineasArchivo(&cantidadLineas);
+    if (cantidadLineas==-1)
+    {
+        return;
+    }
 
     if (cantidadLineas == 0)
     {
@@ -37,10 +41,11 @@ void cerrar()
     while (fscanf(file, "%*d | %f | %*[^|] | %*[^|] | %*[^|] | %*[^|] | %*d/%*d/%*d %*d:%*d:%*d | %s",
                   &monto, estado) == 2)
     {
-        total += monto;
+
         if (strcmp(estado, "Compra") == 0)
         {
             cantCompras++;
+            total += monto;
         }
         else
         {
@@ -66,7 +71,7 @@ void cerrar()
     switch (opcion[0])
     {
     case '1':
-        FILE* file2 = fopen("../output/Transacciones.txt", "w");
+        FILE* file2 = fopen("../output/Transacciones.dat", "w");
 
         if (file2 == NULL)
         {
